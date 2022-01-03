@@ -1,0 +1,4 @@
+#ifndef RCOM_CONNECTION_H_
+#define RCOM_CONNECTION_H_
+
+#endif // RCOM_CONNECTION_H_
