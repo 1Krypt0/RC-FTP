@@ -4,4 +4,6 @@
 #define TRUE 1
 #define FALSE 0
 
+#define DEFAULT_FTP_PORT 21
+
 #endif // RCOM_DEFINES_H_
