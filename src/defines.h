@@ -3,7 +3,12 @@
 
 #define TRUE 1
 #define FALSE 0
+#define MAX_BUFSIZE 1024
 
+#define RESPONSE_CODE_SIZE 3
 #define DEFAULT_FTP_PORT 21
+
+// Server Codes
+#define SERVER_READY 220
 
 #endif // RCOM_DEFINES_H_
