@@ -1,4 +1,5 @@
 #include "connection.h"
+#include "defines.h"
 #include <stdio.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -28,7 +29,28 @@ int start_connection(char *ip, int port)
                 return EXIT_FAILURE;
         }
 
-        printf("Initialized connection with IP %s\n", ip);
-
         return sockfd;
+}
+
+int read_response(int socket_fd, struct server_response *response)
+{
+        FILE *socket = fdopen(socket_fd, "r");
+
+        size_t response_size = 0;
+        size_t size = 0;
+        char *buf;
+
+        while ((size = getline(&buf, &size, socket)) != 4) {
+                strncat(response->response, buf, size - 1);
+                response_size += size;
+
+                if (buf[RESPONSE_CODE_SIZE] == ' ') {
+                        sscanf(buf, "%d", &response->response_code);
+                        break;
+                }
+        }
+
+        free(buf);
+
+        return response_size;
 }
