@@ -17,6 +17,8 @@ typedef struct {
         char *user;
         char *password;
         char *host;
+        char *host_name;
+        char *ip;
         char *path;
 } url_parser;
 
