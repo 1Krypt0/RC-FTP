@@ -67,10 +67,3 @@ int url_has_user(char *arguments)
 {
         return strchr(arguments, ':') ? TRUE : FALSE;
 }
-
-int main(int argc, char **argv)
-{
-        url_parser url;
-        parse_url(&url, argv[1]);
-        return EXIT_SUCCESS;
-}
