@@ -20,4 +20,8 @@ typedef struct {
         char *path;
 } url_parser;
 
+int parse_url(url_parser *parser, char *url);
+
+int url_has_user(char *arguments);
+
 #endif // RCOM_PARSER_H_
