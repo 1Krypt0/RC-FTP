@@ -7,7 +7,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-int parse_url(url_parser *parser, char *url)
+int parse_url(struct url_parser *parser, char *url)
 {
         char *token;
         char *cp;
@@ -63,7 +63,7 @@ int parse_url(url_parser *parser, char *url)
         return EXIT_SUCCESS;
 }
 
-int url_has_user(char *arguments)
+int url_has_user(char *url)
 {
-        return strchr(arguments, ':') ? TRUE : FALSE;
+        return strchr(url, ':') ? TRUE : FALSE;
 }

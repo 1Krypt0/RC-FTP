@@ -1,29 +1,35 @@
 #ifndef RCOM_PARSER_H_
 #define RCOM_PARSER_H_
 
-/**
- * A url should have the following syntax:
- *
- * ftp://[<user>:<password>@]<host>/<path>
- *
- * ftp:// -> obligatory
- * [<user>:<password>] -> optional
- * host -> obligatory
- * path -> obligatory
- *
- **/
-
-typedef struct {
+struct url_parser {
         char *user;
         char *password;
         char *host;
         char *host_name;
         char *ip;
         char *path;
-} url_parser;
+};
 
-int parse_url(url_parser *parser, char *url);
+/**
+ * @brief Parses the URL supplied as argument and fills the struct with the
+ *        appropriate fields
+ *
+ * @param parser Struct that holds the relevant fields of the URL
+ *
+ * @param url URL supplied as argument
+ *
+ * @return 0 if successfull, 1 otherwise
+ *
+ */
+int parse_url(struct url_parser *parser, char *url);
 
-int url_has_user(char *arguments);
+/**
+ * @brief Determines if the url has a user inside
+ *
+ * @param url URL to determine if it has a user or not
+ *
+ * @return 1 if TRUE, 0 if FALSE
+ */
+int url_has_user(char *url);
 
 #endif // RCOM_PARSER_H_
