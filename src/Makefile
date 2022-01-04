@@ -26,7 +26,7 @@ parser.o: parser.c
 	$(CC) $(CFLAGS) parser.c -o parser.o
 
 clean: # -rm -f *.o recv write
-	-rm -f *.o rcom-ftp
+	-rm -f *.o download
 
 
 # end
