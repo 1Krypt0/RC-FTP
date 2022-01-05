@@ -18,4 +18,6 @@ int enter_passive_mode(int socket_fd, struct server_response *response);
 
 int convert_to_port(char *response, char *ip, int *port);
 
+int request_file(int socket_fd, char *file);
+
 #endif // RCOM_MESSAGES_H_
