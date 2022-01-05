@@ -1,10 +1,10 @@
 #ifndef RCOM_DEFINES_H_
 #define RCOM_DEFINES_H_
 
+// Miscellaneous
 #define TRUE 1
 #define FALSE 0
 #define MAX_BUFSIZE 1024
-
 #define RESPONSE_CODE_SIZE 3
 #define DEFAULT_FTP_PORT 21
 
@@ -17,6 +17,7 @@
 #define QUIT_SUCCESS 221
 #define TRANSFER_COMPLETE 226
 
+// FTP Commands
 #define USER "USER"
 #define PASS "PASS"
 #define PASV "PASV"
@@ -28,9 +29,11 @@
 #define RETR_CMD_SIZE 4
 #define QUIT_CMD_SIZE 4
 
+// Defaults
 #define DEFAULT_USER "anonymous"
 #define DEFAULT_PASSWORD "pass"
 
+// End of line
 #define CRLF "\r\n"
 #define CRLF_SIZE 2
 
