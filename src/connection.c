@@ -58,7 +58,7 @@ int read_response(int socket_fd, struct server_response *response)
 
         free(buf);
 
-        return response_size;
+        return EXIT_SUCCESS;
 }
 
 int login(int socket_fd, char *user, char *password)
@@ -68,22 +68,25 @@ int login(int socket_fd, char *user, char *password)
                 password = DEFAULT_PASSWORD;
         }
 
-        size_t user_cmd_size = DEFAULT_USER_SIZE + USER_CMD_SIZE + 1;
-        size_t password_cmd_size = DEFAULT_PASSWORD_SIZE + PASS_CMD_SIZE + 1;
+        size_t user_cmd_size =
+                DEFAULT_USER_SIZE + USER_CMD_SIZE + CRLF_SIZE + 1;
+        size_t password_cmd_size =
+                DEFAULT_PASSWORD_SIZE + PASS_CMD_SIZE + CRLF_SIZE + 1;
 
         char *user_cmd = malloc(user_cmd_size);
         char *password_cmd = malloc(password_cmd_size);
 
-        strcpy(user_cmd, USER);
+        user_cmd[0] = '\0';
+        strcat(user_cmd, USER);
         strcat(user_cmd, " ");
         strcat(user_cmd, user);
+        strcat(user_cmd, CRLF);
 
-        strcpy(password_cmd, PASS);
+        password_cmd[0] = '\0';
+        strcat(password_cmd, PASS);
         strcat(password_cmd, " ");
         strcat(password_cmd, password);
-
-        user_cmd[user_cmd_size++] = '\0';
-        password_cmd[password_cmd_size++] = '\0';
+        strcat(password_cmd, CRLF);
 
         if (send_cmd(socket_fd, user_cmd, user_cmd_size)) {
                 fprintf(stderr, "Error sending user\n");
@@ -95,7 +98,7 @@ int login(int socket_fd, char *user, char *password)
         free(user_cmd);
         struct server_response response;
 
-        if (read_response(socket_fd, &response) == 0) {
+        if (read_response(socket_fd, &response)) {
                 fprintf(stderr, "Error reading server response!\n");
                 free(password_cmd);
                 return EXIT_FAILURE;
