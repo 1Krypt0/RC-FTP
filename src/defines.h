@@ -11,4 +11,7 @@
 // Server Codes
 #define SERVER_READY 220
 
+#define USER "USER"
+#define PASS "PASS"
+
 #endif // RCOM_DEFINES_H_

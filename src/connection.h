@@ -8,6 +8,8 @@ struct server_response {
 
 int start_connection(char *ip, int port);
 
+int close_connection(int socket_fd);
+
 int read_response(int socket_fd, struct server_response *response);
 
 #endif // RCOM_CONNECTION_H_

@@ -61,3 +61,33 @@ int read_response(int socket_fd, struct server_response *response)
 
         return response_size;
 }
+
+static int login(int socket_fd, char *user, char *password)
+{
+        if (user == NULL) {
+                user = "anonymous";
+                password = "pass";
+        }
+
+        size_t user_cmd_size = strlen(user) + strlen(USER) + 1;
+        size_t password_cmd_size = strlen(user) + strlen(USER) + 1;
+
+        char *user_cmd = malloc(user_cmd_size);
+        char *password_cmd = malloc(password_cmd_size);
+
+        strcat(user_cmd, USER);
+        strcat(user_cmd, " ");
+        strcat(user_cmd, user);
+
+        strcat(password_cmd, PASS);
+        strcat(password_cmd, " ");
+        strcat(password_cmd, password);
+
+        user_cmd[user_cmd_size++] = '\0';
+        password_cmd[password_cmd_size++] = '\0';
+}
+
+int close_connection(int socket_fd)
+{
+        return 0;
+}
