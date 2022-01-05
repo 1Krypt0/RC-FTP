@@ -45,13 +45,32 @@ int main(int argc, char **argv)
         char *ip = malloc(16);
         int *port = malloc(sizeof(int));
         if (convert_to_port(response.response, ip, port)) {
-                fprintf(stderr, "Error converting bytes received in response");
+                fprintf(stderr,
+                        "Error converting bytes received in response\n");
                 free(ip);
+                free(port);
                 return EXIT_FAILURE;
         }
 
-        printf("The result IP is %s\n", ip);
-        printf("The result port is %d\n", *port);
+        int data_fd = -1;
+        if ((data_fd = start_connection(ip, *port)) == EXIT_FAILURE) {
+                fprintf(stderr, "Error connecting to other port\n");
+                free(ip);
+                free(port);
+                return EXIT_FAILURE;
+        }
+
+        if (request_file(socket_fd, url.path)) {
+                fprintf(stderr, "Error retrieving file\n");
+                free(ip);
+                free(port);
+                return EXIT_FAILURE;
+        }
+
+        printf("Succesfully requested file %s from server\n", url.path);
+
+        free(ip);
+        free(port);
 
         close(socket_fd);
 

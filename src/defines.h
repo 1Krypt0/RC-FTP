@@ -12,18 +12,19 @@
 #define SERVER_READY 220
 #define USERNAME_OK 331
 #define LOGIN_SUCCESS 230
+#define RETR_SUCCESS 150
 
 #define USER "USER"
 #define PASS "PASS"
 #define PASV "PASV"
+#define RETR "RETR"
 #define USER_CMD_SIZE 4
 #define PASS_CMD_SIZE 4
 #define PASV_CMD_SIZE 4
+#define RETR_CMD_SIZE 4
 
 #define DEFAULT_USER "anonymous"
 #define DEFAULT_PASSWORD "pass"
-#define DEFAULT_USER_SIZE 9
-#define DEFAULT_PASSWORD_SIZE 4
 
 #define CRLF "\r\n"
 #define CRLF_SIZE 2
