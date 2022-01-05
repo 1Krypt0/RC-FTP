@@ -22,4 +22,7 @@
 #define DEFAULT_USER_SIZE 9
 #define DEFAULT_PASSWORD_SIZE 4
 
+#define CRLF "\r\n"
+#define CRLF_SIZE 2
+
 #endif // RCOM_DEFINES_H_
