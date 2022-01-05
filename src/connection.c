@@ -19,13 +19,13 @@ int start_connection(char *ip, int port)
         server_addr.sin_port = htons(port);
 
         if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-                perror("socket");
+                fprintf(stderr, "Error creating socket!\n");
                 return EXIT_FAILURE;
         }
 
         if (connect(sockfd, (struct sockaddr *)&server_addr,
                     sizeof(server_addr)) < 0) {
-                perror("connect");
+                fprintf(stderr, "Error connecting to the given IP!\n");
                 return EXIT_FAILURE;
         }
 
@@ -36,11 +36,17 @@ int read_response(int socket_fd, struct server_response *response)
 {
         FILE *socket = fdopen(socket_fd, "r");
 
+        if (socket == NULL) {
+                close(socket_fd);
+                fprintf(stderr, "Error opening file\n");
+                return EXIT_FAILURE;
+        }
+
         size_t response_size = 0;
         size_t size = 0;
         char *buf;
 
-        while ((size = getline(&buf, &size, socket)) != 4) {
+        while ((size = getline(&buf, &size, socket)) >= 0) {
                 strncat(response->response, buf, size - 1);
                 response_size += size;
 
@@ -51,6 +57,7 @@ int read_response(int socket_fd, struct server_response *response)
         }
 
         free(buf);
+        fclose(socket);
 
         return response_size;
 }
