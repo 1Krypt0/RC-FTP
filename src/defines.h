@@ -13,15 +13,20 @@
 #define USERNAME_OK 331
 #define LOGIN_SUCCESS 230
 #define RETR_SUCCESS 150
+#define PASV_SUCCESS 227
+#define QUIT_SUCCESS 221
+#define TRANSFER_COMPLETE 226
 
 #define USER "USER"
 #define PASS "PASS"
 #define PASV "PASV"
 #define RETR "RETR"
+#define QUIT "QUIT"
 #define USER_CMD_SIZE 4
 #define PASS_CMD_SIZE 4
 #define PASV_CMD_SIZE 4
 #define RETR_CMD_SIZE 4
+#define QUIT_CMD_SIZE 4
 
 #define DEFAULT_USER "anonymous"
 #define DEFAULT_PASSWORD "pass"

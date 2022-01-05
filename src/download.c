@@ -39,9 +39,6 @@ int main(int argc, char **argv)
                 return EXIT_FAILURE;
         }
 
-        printf("Succesfully entered passive mode\n");
-        printf("Got a response of %s\n", response.response);
-
         char *ip = malloc(16);
         int *port = malloc(sizeof(int));
         if (convert_to_port(response.response, ip, port)) {
@@ -60,17 +57,33 @@ int main(int argc, char **argv)
                 return EXIT_FAILURE;
         }
 
+        free(ip);
+        free(port);
+
         if (request_file(socket_fd, url.path)) {
                 fprintf(stderr, "Error retrieving file\n");
-                free(ip);
-                free(port);
+                return EXIT_FAILURE;
+        }
+
+        memset(&response, 0, sizeof(struct server_response));
+        if (read_response(socket_fd, &response)) {
+                fprintf(stderr, "Error reading response\n");
+                return EXIT_FAILURE;
+        }
+
+        if (response.response_code != TRANSFER_COMPLETE) {
+                fprintf(stderr, "File transfer not complete\n");
+                return EXIT_FAILURE;
+        }
+
+        // transfer file goes here
+
+        if (logout(socket_fd)) {
+                fprintf(stderr, "Error quitting\n");
                 return EXIT_FAILURE;
         }
 
         printf("Succesfully requested file %s from server\n", url.path);
-
-        free(ip);
-        free(port);
 
         close(socket_fd);
 
