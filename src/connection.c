@@ -57,12 +57,11 @@ int read_response(int socket_fd, struct server_response *response)
         }
 
         free(buf);
-        fclose(socket);
 
         return response_size;
 }
 
-static int login(int socket_fd, char *user, char *password)
+int login(int socket_fd, char *user, char *password)
 {
         if (user == NULL) {
                 user = DEFAULT_USER;
@@ -75,11 +74,11 @@ static int login(int socket_fd, char *user, char *password)
         char *user_cmd = malloc(user_cmd_size);
         char *password_cmd = malloc(password_cmd_size);
 
-        strcat(user_cmd, USER);
+        strcpy(user_cmd, USER);
         strcat(user_cmd, " ");
         strcat(user_cmd, user);
 
-        strcat(password_cmd, PASS);
+        strcpy(password_cmd, PASS);
         strcat(password_cmd, " ");
         strcat(password_cmd, password);
 
@@ -96,7 +95,7 @@ static int login(int socket_fd, char *user, char *password)
         free(user_cmd);
         struct server_response response;
 
-        if (read_response(socket_fd, &response)) {
+        if (read_response(socket_fd, &response) == 0) {
                 fprintf(stderr, "Error reading server response!\n");
                 free(password_cmd);
                 return EXIT_FAILURE;
@@ -136,6 +135,7 @@ int send_cmd(int socket_fd, char *cmd, size_t cmd_size)
 {
         if (write(socket_fd, cmd, cmd_size) != cmd_size) {
                 fprintf(stderr, "Error writing command!\n");
+                perror("write");
                 return EXIT_FAILURE;
         }
 

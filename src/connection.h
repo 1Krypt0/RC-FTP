@@ -16,4 +16,6 @@ int read_response(int socket_fd, struct server_response *response);
 
 int send_cmd(int socket_fd, char *cmd, size_t cmd_size);
 
+int login(int socket_fd, char *user, char *password);
+
 #endif // RCOM_CONNECTION_H_
