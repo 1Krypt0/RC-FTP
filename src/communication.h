@@ -20,4 +20,6 @@ int convert_to_port(char *response, char *ip, int *port);
 
 int request_file(int socket_fd, char *file);
 
+int logout(int socket_fd);
+
 #endif // RCOM_MESSAGES_H_

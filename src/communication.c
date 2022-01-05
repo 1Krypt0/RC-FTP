@@ -13,11 +13,6 @@ int send_cmd(int socket_fd, char *cmd, size_t cmd_size)
                 return EXIT_FAILURE;
         }
 
-        if (write(socket_fd, CRLF, CRLF_SIZE) != CRLF_SIZE) {
-                fprintf(stderr, "Error writing command terminator\n");
-                return EXIT_FAILURE;
-        }
-
         return EXIT_SUCCESS;
 }
 
@@ -124,13 +119,27 @@ int login(int socket_fd, char *user, char *password)
 
 int enter_passive_mode(int socket_fd, struct server_response *response)
 {
-        if (send_cmd(socket_fd, PASV, PASV_CMD_SIZE)) {
+        int pasv_cmd_size = PASV_CMD_SIZE + CRLF_SIZE;
+        char *pasv_cmd = malloc(pasv_cmd_size);
+
+        pasv_cmd[0] = '\0';
+        strcat(pasv_cmd, PASV);
+        strcat(pasv_cmd, CRLF);
+
+        if (send_cmd(socket_fd, pasv_cmd, pasv_cmd_size)) {
                 fprintf(stderr, "Error sending PASV command\n");
                 return EXIT_FAILURE;
         }
 
         if (read_response(socket_fd, response)) {
                 fprintf(stderr, "Error reading server response\n");
+                return EXIT_FAILURE;
+        }
+
+        if (response->response_code != PASV_SUCCESS) {
+                fprintf(stderr,
+                        "Error entering passive mode.\n Response: %d - %s\n",
+                        response->response_code, response->response);
                 return EXIT_FAILURE;
         }
 
@@ -167,12 +176,11 @@ int request_file(int socket_fd, char *file)
 
         if (send_cmd(socket_fd, retr_cmd, retr_cmd_size)) {
                 fprintf(stderr, "Error sending retr command\n");
-                free(retr_cmd);
                 return EXIT_FAILURE;
         }
 
-        free(retr_cmd);
         struct server_response response;
+        memset(&response, 0, sizeof(struct server_response));
 
         if (read_response(socket_fd, &response)) {
                 fprintf(stderr, "Error reading server response!\n");
@@ -181,6 +189,36 @@ int request_file(int socket_fd, char *file)
 
         if (response.response_code != RETR_SUCCESS) {
                 fprintf(stderr, "Error with retr command.\nResponse: %d - %s\n",
+                        response.response_code, response.response);
+                return EXIT_FAILURE;
+        }
+
+        return EXIT_SUCCESS;
+}
+
+int logout(int socket_fd)
+{
+        struct server_response response;
+        memset(&response, 0, sizeof(struct server_response));
+        int logout_cmd_size = QUIT_CMD_SIZE + CRLF_SIZE;
+        char *logout_cmd = malloc(logout_cmd_size);
+
+        logout_cmd[0] = '\0';
+        strcat(logout_cmd, QUIT);
+        strcat(logout_cmd, CRLF);
+
+        if (send_cmd(socket_fd, logout_cmd, logout_cmd_size)) {
+                fprintf(stderr, "Error sending logout command\n");
+                return EXIT_FAILURE;
+        }
+
+        if (read_response(socket_fd, &response)) {
+                fprintf(stderr, "Error reading server response\n");
+                return EXIT_FAILURE;
+        }
+
+        if (response.response_code != QUIT_SUCCESS) {
+                fprintf(stderr, "Error quitting.\n Response: %d - %s\n",
                         response.response_code, response.response);
                 return EXIT_FAILURE;
         }
