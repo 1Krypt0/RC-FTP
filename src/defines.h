@@ -10,6 +10,8 @@
 
 // Server Codes
 #define SERVER_READY 220
+#define USERNAME_OK 331
+#define LOGIN_SUCCESS 230
 
 #define USER "USER"
 #define PASS "PASS"

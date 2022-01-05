@@ -86,13 +86,49 @@ static int login(int socket_fd, char *user, char *password)
         user_cmd[user_cmd_size++] = '\0';
         password_cmd[password_cmd_size++] = '\0';
 
-        //send user
-        // if response is good
-        // send password
-        // else return error
-        // if password is good
-        // return
-        // else return error
+        if (send_cmd(socket_fd, user_cmd, user_cmd_size)) {
+                fprintf(stderr, "Error sending user\n");
+                free(user_cmd);
+                free(password_cmd);
+                return EXIT_FAILURE;
+        }
+
+        free(user_cmd);
+        struct server_response response;
+
+        if (read_response(socket_fd, &response)) {
+                fprintf(stderr, "Error reading server response!\n");
+                free(password_cmd);
+                return EXIT_FAILURE;
+        }
+
+        if (response.response_code != USERNAME_OK) {
+                fprintf(stderr, "Error with username.\nResponse: %d - %s\n",
+                        response.response_code, response.response);
+                free(password_cmd);
+                return EXIT_FAILURE;
+        }
+
+        if (send_cmd(socket_fd, password_cmd, password_cmd_size)) {
+                fprintf(stderr, "Error sending password\n");
+                free(password_cmd);
+                return EXIT_FAILURE;
+        }
+
+        free(password_cmd);
+        memset(&response, 0, sizeof(struct server_response));
+
+        if (read_response(socket_fd, &response)) {
+                fprintf(stderr, "Error reading server response!\n");
+                return EXIT_FAILURE;
+        }
+
+        if (response.response_code != LOGIN_SUCCESS) {
+                fprintf(stderr, "Error with password.\nResponse: %d - %s\n",
+                        response.response_code, response.response);
+                return EXIT_FAILURE;
+        }
+
         return EXIT_SUCCESS;
 }
 
