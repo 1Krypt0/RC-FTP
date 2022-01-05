@@ -18,6 +18,7 @@
 #define PASV "PASV"
 #define USER_CMD_SIZE 4
 #define PASS_CMD_SIZE 4
+#define PASV_CMD_SIZE 4
 
 #define DEFAULT_USER "anonymous"
 #define DEFAULT_PASSWORD "pass"

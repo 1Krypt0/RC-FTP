@@ -5,6 +5,22 @@
 #include <unistd.h>
 #include <string.h>
 
+int send_cmd(int socket_fd, char *cmd, size_t cmd_size)
+{
+        if (write(socket_fd, cmd, cmd_size) != cmd_size) {
+                fprintf(stderr, "Error writing command!\n");
+                perror("write");
+                return EXIT_FAILURE;
+        }
+
+        if (write(socket_fd, CRLF, CRLF_SIZE) != CRLF_SIZE) {
+                fprintf(stderr, "Error writing command terminator\n");
+                return EXIT_FAILURE;
+        }
+
+        return EXIT_SUCCESS;
+}
+
 int read_response(int socket_fd, struct server_response *response)
 {
         FILE *socket = fdopen(socket_fd, "r");
@@ -107,18 +123,34 @@ int login(int socket_fd, char *user, char *password)
         return EXIT_SUCCESS;
 }
 
-int send_cmd(int socket_fd, char *cmd, size_t cmd_size)
+int enter_passive_mode(int socket_fd, struct server_response *response)
 {
-        if (write(socket_fd, cmd, cmd_size) != cmd_size) {
-                fprintf(stderr, "Error writing command!\n");
-                perror("write");
+        if (send_cmd(socket_fd, PASV, PASV_CMD_SIZE)) {
+                fprintf(stderr, "Error sending PASV command\n");
                 return EXIT_FAILURE;
         }
 
-        if (write(socket_fd, CRLF, CRLF_SIZE) != CRLF_SIZE) {
-                fprintf(stderr, "Error writing command terminator\n");
+        if (read_response(socket_fd, response)) {
+                fprintf(stderr, "Error reading server response\n");
                 return EXIT_FAILURE;
         }
+
+        return EXIT_SUCCESS;
+}
+
+int convert_to_port(char *response, char *ip, int *port)
+{
+        char *cp = strdup(response);
+
+        char *values = strtok(cp, "(");
+        values = strtok(NULL, ")");
+
+        int tmp[6];
+        sscanf(values, "%d, %d, %d, %d, %d, %d", &tmp[0], &tmp[1], &tmp[2],
+               &tmp[3], &tmp[4], &tmp[5]);
+
+        *port = tmp[4] * 256 + tmp[5];
+        sprintf(ip, "%d.%d.%d.%d", tmp[0], tmp[1], tmp[2], tmp[3]);
 
         return EXIT_SUCCESS;
 }

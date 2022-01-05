@@ -8,10 +8,14 @@ struct server_response {
         int response_code;
 };
 
-int read_response(int socket_fd, struct server_response *response);
-
 int send_cmd(int socket_fd, char *cmd, size_t cmd_size);
 
+int read_response(int socket_fd, struct server_response *response);
+
 int login(int socket_fd, char *user, char *password);
+
+int enter_passive_mode(int socket_fd, struct server_response *response);
+
+int convert_to_port(char *response, char *ip, int *port);
 
 #endif // RCOM_MESSAGES_H_
