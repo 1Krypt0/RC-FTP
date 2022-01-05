@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 int main(int argc, char **argv)
 {
@@ -21,8 +22,17 @@ int main(int argc, char **argv)
 
         read_response(socket_fd, &response);
 
+        printf("The socket is %d\n", socket_fd);
+
         printf("The response is %s \n and the response code is %d\n",
                response.response, response.response_code);
+
+        if (login(socket_fd, url.user, url.password)) {
+                fprintf(stderr, "Error logging in\n");
+                return EXIT_FAILURE;
+        }
+
+        close(socket_fd);
 
         return EXIT_SUCCESS;
 }
