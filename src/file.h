@@ -2,7 +2,8 @@
 #define RCOM_FILE_H_
 
 #include "parser.h"
-int read_file(int socket_fd, char *file_name);
+
+int read_file(int socket_fd, char *file_path);
 
 int transfer_file(struct url_parser *url);
 

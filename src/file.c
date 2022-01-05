@@ -3,6 +3,8 @@
 #include "communication.h"
 #include "defines.h"
 #include <stdlib.h>
+#include <libgen.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -60,6 +62,11 @@ int transfer_file(struct url_parser *url)
                 return EXIT_FAILURE;
         }
 
+        if (read_file(data_fd, url->path)) {
+                fprintf(stderr, "Error reading file\n");
+                return EXIT_FAILURE;
+        }
+
         memset(&response, 0, sizeof(struct server_response));
         if (read_response(socket_fd, &response)) {
                 fprintf(stderr, "Error reading response\n");
@@ -71,8 +78,6 @@ int transfer_file(struct url_parser *url)
                 return EXIT_FAILURE;
         }
 
-        // transfer file goes here
-
         if (logout(socket_fd)) {
                 fprintf(stderr, "Error quitting\n");
                 return EXIT_FAILURE;
@@ -82,6 +87,39 @@ int transfer_file(struct url_parser *url)
 
         close(socket_fd);
         close(data_fd);
+
+        return EXIT_SUCCESS;
+}
+
+int read_file(int socket_fd, char *file_path)
+{
+        char *file_name = basename(file_path);
+        int file_fd = 0;
+        file_fd = open(file_name, O_WRONLY | O_CREAT,
+                       S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+
+        printf("File fd is of %d\n", file_fd);
+
+        if (file_fd == -1) {
+                fprintf(stderr, "Error opening file\n");
+                return EXIT_FAILURE;
+        }
+
+        char buf[MAX_BUFSIZE];
+        int bytes_read = 0;
+
+        while ((bytes_read = read(socket_fd, buf, MAX_BUFSIZE)) > 0) {
+                if (write(file_fd, buf, bytes_read) == -1) {
+                        fprintf(stderr, "Error writing to file\n");
+                        close(file_fd);
+                        return EXIT_FAILURE;
+                }
+        }
+
+        if (close(file_fd)) {
+                fprintf(stderr, "Error closing file\n");
+                return EXIT_FAILURE;
+        }
 
         return EXIT_SUCCESS;
 }
