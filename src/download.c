@@ -1,5 +1,6 @@
 #include "parser.h"
 #include "connection.h"
+#include "communication.h"
 #include "defines.h"
 #include <stdio.h>
 #include <stdlib.h>
