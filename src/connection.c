@@ -46,7 +46,7 @@ int read_response(int socket_fd, struct server_response *response)
         size_t size = 0;
         char *buf;
 
-        while ((size = getline(&buf, &size, socket)) >= 0) {
+        while (getline(&buf, &size, socket) >= 0) {
                 strncat(response->response, buf, size - 1);
                 response_size += size;
 
