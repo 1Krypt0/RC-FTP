@@ -13,5 +13,13 @@
 
 #define USER "USER"
 #define PASS "PASS"
+#define PASV "PASV"
+#define USER_CMD_SIZE 4
+#define PASS_CMD_SIZE 4
+
+#define DEFAULT_USER "anonymous"
+#define DEFAULT_PASSWORD "pass"
+#define DEFAULT_USER_SIZE 9
+#define DEFAULT_PASSWORD_SIZE 4
 
 #endif // RCOM_DEFINES_H_
