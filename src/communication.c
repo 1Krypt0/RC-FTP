@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <string.h>
 
-int send_cmd(int socket_fd, char *cmd, size_t cmd_size)
+int send_cmd(int socket_fd, char *cmd, int cmd_size)
 {
         if (write(socket_fd, cmd, cmd_size) != cmd_size) {
                 fprintf(stderr, "Error writing command!\n");
