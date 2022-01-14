@@ -3,6 +3,8 @@
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
 \usepackage[margin=3.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage{minted}
 \graphicspath{{./images/}}
 
 \title{\includegraphics[scale=0.3]{logo.png} \\ \textbf{File Transfer Protocol}}
@@ -53,7 +55,7 @@ Rodrigues up201907021@fe.up.pt \\ Mário Travassos up201905871@fe.up.pt  }
 
 \subsection*{Case study}
 
-\paragraph{}The majority of the anonymous download tests were done by downloading from the server at ftp.up.pt, but since it only supports anonymous login, the authenticated tests were done using the server at netlab1.fe.up.pt, using the username rcom and password rcom. All of them were successful.
+\paragraph{}The majority of the anonymous download tests were done by downloading from the server at \textbf{ftp.up.pt}, but since it only supports anonymous login, the authenticated tests were done using the server at \textbf{netlab1.fe.up.pt}, using the username \textbf{rcom} and password \textbf{rcom}. All of them were successful.
 
 \paragraph{}The application allows the user to see the information he gave in the URL separated into the components, to check if it is correctly formatted. Also, in the event of a failure, the application shows the bad response code and message that led to the termination.
 
@@ -61,14 +63,83 @@ Rodrigues up201907021@fe.up.pt \\ Mário Travassos up201905871@fe.up.pt  }
 
 \section*{Conclusions}
 
+\paragraph{}The implemented download application achieved the proposed results, being able to download files from any FTP server using the FTP standard. More importantly, the standard was very well understood.
+
 \section*{References}
+
+\begin{itemize}
+    \item{RFC959 - File Transfer Protocol: \url{https://www.rfc-editor.org/info/rfc959}}
+    \item{RFC1738 - Uniform Resource Locator (URL): \url{https://www.rfc-editor.org/info/rfc1738}}
+\end{itemize}
 
 \section*{Annexes}
 
 \subsection*{Application Source Code}
 
-\subsection*{Configuration Commands}
+\subsection*{Annex I - Application Source Code}
 
-\subsection*{Data Logs}
+\subsubsection*{communication.c}
+
+\inputminted{c}{communication.c}
+
+\newpage
+
+\subsubsection*{communication.h}
+
+\inputminted{c}{communication.h}
+
+\newpage
+
+\subsubsection*{connection.c}
+
+\inputminted{c}{connection.c}
+
+\newpage
+
+\subsubsection*{connection.h}
+
+\inputminted{c}{connection.h}
+
+\newpage
+
+\subsubsection*{defines.h}
+
+\inputminted{c}{defines.h}
+
+\newpage
+
+\subsubsection*{download.c}
+
+\inputminted{c}{download.c}
+
+\newpage
+
+\subsubsection*{file.c}
+
+\inputminted{c}{file.c}
+
+\newpage
+
+\subsubsection*{file.h}
+
+\inputminted{c}{file.h}
+
+\newpage
+
+\subsubsection*{parser.c}
+
+\inputminted{c}{parser.c}
+
+\newpage
+
+\subsubsection*{parser.h}
+
+\inputminted{c}{parser.h}
+
+\newpage
+
+\subsection*{Annex II - Configuration Commands}
+
+\subsection*{Annex III - Data Logs}
 
 \end{document}
