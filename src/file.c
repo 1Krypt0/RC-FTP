@@ -98,8 +98,6 @@ int read_file(int socket_fd, char *file_path)
         file_fd = open(file_name, O_WRONLY | O_CREAT,
                        S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 
-        printf("File fd is of %d\n", file_fd);
-
         if (file_fd == -1) {
                 fprintf(stderr, "Error opening file\n");
                 return EXIT_FAILURE;
