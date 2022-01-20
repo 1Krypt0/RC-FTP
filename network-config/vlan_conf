@@ -1,0 +1,28 @@
+configure terminal
+
+vlan 40
+vlan 41
+
+interface fastethernet 0/1
+switchport mode access
+switchport access vlan 40
+
+interface fastethernet 0/2
+switchport mode access
+switchport access vlan 40
+
+interface fastethernet 0/13
+switchport mode access
+switchport access vlan 41
+
+interface fastethernet 0/14
+switchport mode access
+switchport access vlan 41
+
+end
+
+show running-config interface fastethernet 0/port
+show interfaces fastethernet 0/port switchport
+
+
+show vlan id 40/41
