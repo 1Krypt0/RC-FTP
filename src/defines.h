@@ -5,7 +5,6 @@
 #define TRUE 1
 #define FALSE 0
 #define MAX_BUFSIZE 1024
-#define RESPONSE_CODE_SIZE 3
 #define DEFAULT_FTP_PORT 21
 
 // Server Codes
@@ -16,6 +15,7 @@
 #define PASV_SUCCESS 227
 #define QUIT_SUCCESS 221
 #define TRANSFER_COMPLETE 226
+#define RESPONSE_CODE_SIZE 3
 
 // FTP Commands
 #define USER "USER"
