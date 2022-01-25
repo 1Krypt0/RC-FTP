@@ -16,4 +16,5 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 # disable ICMP echo ignore broadcast
 echo 0 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
 
-# clean arp table
+# set tux44's default gateway to the cisco router
+route add default gw 172.16.41.254
